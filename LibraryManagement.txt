@@ -23,7 +23,7 @@ class Library {
 
     public void borrowBook(String title) {
         for (Book book : books) {
-            if (book.title == title) {   // ❌ Bug 1: Using "==" instead of .equals()
+            if (book.title == title) {   // ❌ Bug 1: Using "==" instead of .equals() bro
                 if (book.isAvailable = false) { // ❌ Bug 2: Assignment instead of comparison
                     System.out.println("Book not available.");
                 } else {
