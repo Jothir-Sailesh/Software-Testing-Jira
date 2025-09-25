@@ -1,0 +1,87 @@
+import java.util.*;
+
+class Book {
+    String title;
+    String author;
+    boolean isAvailable;
+
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+        this.isAvailable = true;
+    }
+}
+
+class Library {
+    private List<Book> books = new ArrayList<>();
+
+    public void addBook(String title, String author) {
+        Book book = new Book(title, author);
+        books.add(book);
+        System.out.println("Book added: " + title);
+    }
+
+    public void borrowBook(String title) {
+        for (Book book : books) {
+            if (book.title == title) {   // ❌ Bug 1: Using "==" instead of .equals()
+                if (book.isAvailable = false) { // ❌ Bug 2: Assignment instead of comparison
+                    System.out.println("Book not available.");
+                } else {
+                    book.isAvailable = false;
+                    System.out.println("You borrowed: " + book.title);
+                }
+                return;
+            }
+        }
+        System.out.println("Book not found."); // works fine
+    }
+
+    public void returnBook(String title) {
+        for (Book book : books) {
+            if (book.title.equals(title)) {
+                if (book.isAvailable) {
+                    System.out.println("Error: Book already returned."); // ❌ Bug 3: Wrong logic (should check !isAvailable)
+                } else {
+                    book.isAvailable = true;
+                    System.out.println("Book returned: " + title);
+                }
+                return;
+            }
+        }
+        System.out.println("Book not found.");
+    }
+
+    public void listBooks() {
+        if (books.size() == 0) {
+            System.out.println("No books in library."); // ❌ Bug 4: Not consistent (could use books.isEmpty())
+        }
+        for (Book book : books) {
+            System.out.println(book.title + " by " + book.author + " | Available: " + book.isAvailable);
+        }
+    }
+
+    public void removeBook(String title) {
+        for (Book book : books) {
+            if (book.title.equals(title)) {
+                books.remove(book); // ❌ Bug 5: ConcurrentModificationException risk
+                System.out.println("Book removed: " + title);
+                return;
+            }
+        }
+        System.out.println("Book not found.");
+    }
+}
+
+public class LibraryApp {
+    public static void main(String[] args) {
+        Library library = new Library();
+        library.addBook("Java Basics", "James Gosling");
+        library.addBook("Python 101", "Guido van Rossum");
+
+        library.listBooks();
+        library.borrowBook("Java Basics");
+        library.returnBook("Java Basics");
+        library.removeBook("Python 101");
+        library.listBooks();
+    }
+}
