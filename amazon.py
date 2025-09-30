@@ -9,7 +9,7 @@ searchBar = driver.find_element(By.ID, "twotabsearchtextbox")
 searchBar.click()
 
 searchBar.send_keys("Sony PS5")
-searchButton = driver.find_elements(By.id, "nav-search-submit-button")
+searchButton = driver.find_element(By.ID, "nav-search-submit-button")
 searchButton.click()
 
 
